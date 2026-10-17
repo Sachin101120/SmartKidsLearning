@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Smart Kids Learning — Class 2</title>
+<style>
+:root{--ink:#20304a;--muted:#64748b;--purple:#7057d9;--bg:#f6f7ff;--card:#fff;--green:#16865b;--red:#c24152}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:linear-gradient(125deg,#7057d9,#4e8de8);color:white;padding:22px 18px 28px;border-radius:0 0 28px 28px}
+.wrap{max-width:950px;margin:auto;padding:0 14px}header .top{display:flex;justify-content:space-between;align-items:center;gap:12px}h1{font-size:clamp(1.5rem,5vw,2.2rem);margin:8px 0}header p{margin:4px 0 0;opacity:.93}.pill{background:#ffffff2a;padding:8px 12px;border-radius:20px;font-weight:700;white-space:nowrap}
+main{padding:20px 0 40px}.welcome{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}.welcome h2{margin:0;font-size:1.25rem}.welcome p{margin:5px 0;color:var(--muted)}.mascot{font-size:3rem}
+.subjects{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}.subject{border:0;background:var(--card);border-radius:18px;padding:16px 12px;text-align:left;box-shadow:0 5px 18px #28365b0c;cursor:pointer;color:var(--ink);transition:.15s}.subject:hover,.subject:focus{transform:translateY(-2px);outline:2px solid #c8c0ff}.subject .emoji{font-size:2rem}.subject strong{display:block;margin:7px 0 3px}.subject small{color:var(--muted)}
+.panel{background:var(--card);padding:20px;border-radius:22px;margin-top:20px;box-shadow:0 5px 18px #28365b0c}.panel h2{margin:0 0 8px}.muted{color:var(--muted)}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+button,.btn{font:inherit;border:0;border-radius:12px;padding:11px 15px;background:var(--purple);color:white;font-weight:700;cursor:pointer}.secondary{background:#eeeaff;color:#5140aa}.device-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-top:14px}.device{border:2px solid #e7e8f5;background:#fbfbff;color:var(--ink);padding:14px 8px;border-radius:14px;text-align:center}.device .emoji{display:block;font-size:2rem}.device small{display:block;color:var(--muted);margin-top:4px}
+.quizbox{background:#f5f2ff;border-radius:18px;padding:17px;margin-top:14px}.question{font-size:1.12rem;font-weight:800;margin:0 0 12px}.answers{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:9px}.answer{background:white;color:var(--ink);border:2px solid #e4dfff;text-align:left}.answer.correct{border-color:#44b98b;background:#eafff5}.answer.wrong{border-color:#e88b98;background:#fff0f2}.feedback{font-weight:700;margin-top:12px;min-height:24px}.progressrow{display:flex;gap:12px;flex-wrap:wrap}.stat{flex:1;min-width:120px;background:#f8f7ff;border-radius:14px;padding:13px}.stat strong{display:block;font-size:1.5rem}.hidden{display:none}.tag{display:inline-block;background:#e8fff4;color:#12734c;padding:5px 10px;border-radius:20px;font-size:.8rem;font-weight:800}
+footer{text-align:center;color:var(--muted);font-size:.85rem;padding:10px 15px 28px}
+@media(max-width:480px){.welcome{align-items:flex-start}.panel{padding:16px}.subject{padding:13px 10px}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><div class="top"><div><div>🌈 SMART KIDS LEARNING</div><h1>Learn, Play & Shine!</h1><p>Class 2 • Fun learning every day</p></div><div class="pill">⭐ <span id="stars">0</span> stars</div></div></div></header>
+<main class="wrap">
+<section class="welcome"><div><h2>Hi, Super Learner! 👋</h2><p>What would you like to learn today?</p></div><div class="mascot" aria-hidden="true">🦉</div></section>
+<div class="subjects">
+<button class="subject" onclick="openSubject('English')"><span class="emoji">🔤</span><strong>English</strong><small>Words & sentences</small></button>
+<button class="subject" onclick="openSubject('Mathematics')"><span class="emoji">🔢</span><strong>Mathematics</strong><small>Numbers & shapes</small></button>
+<button class="subject" onclick="openSubject('Marathi')"><span class="emoji">📚</span><strong>मराठी</strong><small>वाचन आणि शब्द</small></button>
+<button class="subject" onclick="openSubject('Hindi')"><span class="emoji">🪷</span><strong>हिंदी</strong><small>शब्द और वाचन</small></button>
+<button class="subject" onclick="openSubject('EVS')"><span class="emoji">🌱</span><strong>EVS</strong><small>Nature & our world</small></button>
+<button class="subject" onclick="openSubject('General Knowledge')"><span class="emoji">🌍</span><strong>General Knowledge</strong><small>Discover the world</small></button>
+<button class="subject" onclick="openSubject('Computer Knowledge')"><span class="emoji">💻</span><strong>Computer Knowledge</strong><small>Input & output devices</small></button>
+<button class="subject" onclick="showQuiz()"><span class="emoji">🎯</span><strong>Quiz & Games</strong><small>Test what you know</small></button>
+</div>
+<section id="lesson" class="panel hidden" aria-live="polite"></section>
+<section class="panel"><h2>🏆 My Learning Progress</h2><p class="muted">Your scores, attempts and stars are saved on this device, even after you close the app.</p><div class="progressrow"><div class="stat"><strong id="score">0</strong><span>Correct answers</span></div><div class="stat"><strong id="done">0</strong><span>Questions tried</span></div><div class="stat"><strong id="rate">0%</strong><span>Accuracy</span></div></div><div class="actions"><button class="secondary" onclick="showQuiz()">Start a quick quiz</button><button class="secondary" onclick="speak('You are doing great! Keep learning every day!')">🔊 Read encouragement</button><button class="secondary" onclick="resetProgress()">Reset progress</button></div></section>
+</main><footer>Made for curious Class 2 learners • Ask a grown-up to help you explore safely.</footer>
+<script>
+const questions = {
+'Computer Knowledge':[
+{q:'Which device helps us type letters into a computer?',a:['Monitor','Keyboard','Speaker','Printer'],c:1,why:'A keyboard is an input device. We use it to enter letters and numbers.'},
+{q:'Which device moves the pointer on the screen?',a:['Mouse','Printer','Speaker','Monitor'],c:0,why:'A mouse is an input device used to point and click.'},
+{q:'Which device records our voice?',a:['Monitor','Microphone','Printer','Keyboard'],c:1,why:'A microphone sends sound into a computer.'},
+{q:'Which device gives a paper copy?',a:['Mouse','Speaker','Printer','Webcam'],c:2,why:'A printer prints information on paper.'},
+{q:'Which device shows pictures and words from a computer?',a:['Mouse','Microphone','Monitor','Scanner'],c:2,why:'A monitor is an output device. It displays information.'},
+{q:'Which device plays sound?',a:['Speaker','Keyboard','Scanner','Mouse'],c:0,why:'Speakers are output devices because they give sound as output.'},
+{q:'A mouse is usually a…',a:['Input device','Output device','Book','Printer'],c:0,why:'A mouse helps us give instructions to the computer, so it is an input device.'},
+{q:'Which device can print work on paper?',a:['Microphone','Printer','Keyboard','Webcam'],c:1,why:'A printer is an output device because it puts information onto paper.'}],
+'Mathematics':[
+{q:'What is 8 + 5?',a:['12','13','14','15'],c:1,why:'8 plus 5 equals 13.'},
+{q:'What is 6 + 7?',a:['12','13','14','15'],c:1,why:'6 plus 7 equals 13.'},
+{q:'What is 20 − 4?',a:['14','15','16','17'],c:2,why:'20 take away 4 leaves 16.'},
+{q:'How many corners does a square have?',a:['2','3','4','5'],c:2,why:'A square has four corners.'},
+{q:'What is 17 − 9?',a:['6','7','8','9'],c:2,why:'17 take away 9 leaves 8.'},
+{q:'Which shape has 3 sides?',a:['Circle','Square','Triangle','Rectangle'],c:2,why:'A triangle has three sides.'},
+{q:'How many days are in one week?',a:['5','6','7','8'],c:2,why:'There are seven days in a week.'}],
+'English':[
+{q:'Which word names an animal?',a:['Run','Happy','Tiger','Blue'],c:2,why:'Tiger is the name of an animal.'},
+{q:'What is the opposite of hot?',a:['Warm','Cold','Tall','Fast'],c:1,why:'Cold is the opposite of hot.'},
+{q:'Which is a naming word?',a:['Play','Beautiful','School','Quickly'],c:2,why:'School is a naming word.'},
+{q:'Choose the correct spelling.',a:['Skool','School','Scool','Sckool'],c:1,why:'The correct spelling is S-C-H-O-O-L.'},
+{q:'Which word is an action word?',a:['Jump','Table','Pencil','Green'],c:0,why:'Jump tells us an action.'}],
+'Marathi':[
+{q:'“आई” या शब्दाचा अर्थ काय?',a:['Mother','Water','Tree','Book'],c:0,why:'आई म्हणजे Mother.'},
+{q:'यापैकी भाजी कोणती?',a:['आंबा','गाजर','पुस्तक','चेंडू'],c:1,why:'गाजर ही भाजी आहे.'},
+{q:'“मोठा” या शब्दाचा विरुद्धार्थी शब्द कोणता?',a:['लहान','उंच','जाड','जलद'],c:0,why:'मोठा या शब्दाचा विरुद्धार्थी शब्द लहान.'},
+{q:'यापैकी फळ कोणते?',a:['खुर्ची','आंबा','पुस्तक','दप्तर'],c:1,why:'आंबा हे फळ आहे.'}],
+'Hindi':[
+{q:'सूरज हमें क्या देता है?',a:['रोशनी','जूते','किताब','कुर्सी'],c:0,why:'सूरज हमें रोशनी और गर्मी देता है।'},
+{q:'आम कौन-सा फल है?',a:['सब्जी','फल','खिलौना','किताब'],c:1,why:'आम एक फल है।'},
+{q:'दिन के बाद क्या आता है?',a:['सुबह','रात','दोपहर','कलम'],c:1,why:'दिन के बाद रात आती है।'}],
+'EVS':[
+{q:'Which part of a plant absorbs water from soil?',a:['Flower','Root','Fruit','Leaf'],c:1,why:'Roots take in water from the soil.'},
+{q:'Which animal gives us milk?',a:['Cow','Tiger','Crow','Snake'],c:0,why:'Cows can give us milk.'},
+{q:'Which habit keeps our teeth healthy?',a:['Never brush','Brush twice daily','Eat only sweets','Skip water'],c:1,why:'Brushing twice a day helps keep teeth clean.'},
+{q:'Which one is a source of clean drinking water?',a:['Clean tap water','Mud','Smoke','Sand'],c:0,why:'Clean, safe water is important for our health.'}],
+'General Knowledge':[
+{q:'What is the capital of India?',a:['Mumbai','New Delhi','Chennai','Pune'],c:1,why:'New Delhi is the capital of India.'},
+{q:'How many colours are in a rainbow traditionally?',a:['5','6','7','8'],c:2,why:'A rainbow is traditionally described as having seven colours.'},
+{q:'Which festival is known as the festival of lights?',a:['Holi','Diwali','Eid','Christmas'],c:1,why:'Diwali is widely known as the festival of lights.'},
+{q:'What is the national animal of India?',a:['Lion','Elephant','Bengal tiger','Horse'],c:2,why:'The Bengal tiger is the national animal of India.'}]
+};
+const PROGRESS_KEY='smartKidsClass2ProgressV2';
+let savedProgress={correct:0,tried:0,stars:0};
+try { savedProgress = Object.assign(savedProgress, JSON.parse(localStorage.getItem(PROGRESS_KEY)||'{}')); } catch(e) {}
+let subject='Computer Knowledge', index=0, correct=Number(savedProgress.correct)||0, tried=Number(savedProgress.tried)||0, stars=Number(savedProgress.stars)||0, answered=false;
+function openSubject(s){subject=s;index=0;document.getElementById('lesson').classList.remove('hidden');let el=document.getElementById('lesson');
+if(s==='Computer Knowledge'){el.innerHTML=`<h2>💻 Input & Output Devices</h2><p> <b>Input</b> means we send information into a computer. <b>Output</b> means the computer gives information back to us.</p><div class="device-grid"><div class="device"><span class="emoji" role="img" aria-label="Keyboard">⌨️</span><b>Keyboard</b><small>INPUT • Type letters</small></div><div class="device"><span class="emoji" role="img" aria-label="Mouse">🖱️</span><b>Mouse</b><small>INPUT • Point and click</small></div><div class="device"><span class="emoji" role="img" aria-label="Microphone">🎤</span><b>Microphone</b><small>INPUT • Record sound</small></div><div class="device"><span class="emoji" role="img" aria-label="Monitor">🖥️</span><b>Monitor</b><small>OUTPUT • Show pictures</small></div><div class="device"><span class="emoji" role="img" aria-label="Printer">🖨️</span><b>Printer</b><small>OUTPUT • Print on paper</small></div><div class="device"><span class="emoji" role="img" aria-label="Speakers">🔊</span><b>Speakers</b><small>OUTPUT • Play sound</small></div></div><p class="muted">Example: You type your name on a keyboard (input), and it appears on the monitor (output).</p><div class="actions"><button onclick="startQuiz('Computer Knowledge')">Play input/output quiz ▶</button><button class="secondary" onclick="speak('Input devices send information to the computer. Output devices show or play the result. A keyboard is input. A monitor is output.')">🔊 Listen</button></div>`;}
+else {const info={'English':'Practice words, spelling, reading and simple sentences.','Mathematics':'Practise adding, subtracting, shapes and number patterns.','Marathi':'अक्षरे, सोपे शब्द आणि वाचनाचा सराव करूया.','Hindi':'आइए सरल शब्दों और वाचन का अभ्यास करें।','EVS':'Explore plants, animals, water, food and the world around you.','General Knowledge':'Discover India, our national symbols and everyday facts.'};el.innerHTML=`<h2>${emoji(s)} ${s}</h2><p>${info[s]||'Let us learn something new!'}</p><p class="muted">Choose a short practice quiz. Learn from every answer and collect stars!</p><div class="actions"><button onclick="startQuiz('${s}')">Start ${s} quiz ▶</button><button class="secondary" onclick="speak('${info[s].replaceAll("'","")}')">🔊 Listen</button></div>`;}
+el.scrollIntoView({behavior:'smooth',block:'start'});}
+function emoji(s){return {'English':'🔤','Mathematics':'🔢','Marathi':'📚','Hindi':'🪷','EVS':'🌱','General Knowledge':'🌍'}[s]||'⭐'}
+function showQuiz(){openSubject('Computer Knowledge');startQuiz('Computer Knowledge')}
+function startQuiz(s){subject=s;index=0;answered=false;renderQuestion();document.getElementById('lesson').scrollIntoView({behavior:'smooth'});}
+function renderQuestion(){let list=questions[subject]||questions['General Knowledge'];let q=list[index%list.length];answered=false;let el=document.getElementById('lesson');el.classList.remove('hidden');el.innerHTML=`<span class="tag">QUESTION ${(index%list.length)+1} / ${list.length}</span><h2 style="margin-top:12px">${emoji(subject)} ${subject} Quiz</h2><div class="quizbox"><p class="question">${q.q}</p><div class="answers">${q.a.map((a,i)=>`<button class="answer" onclick="answer(${i})">${String.fromCharCode(65+i)}. ${a}</button>`).join('')}</div><div id="feedback" class="feedback"></div><div class="actions"><button id="next" class="hidden" onclick="nextQuestion()">Next question →</button><button class="secondary" onclick="speak('${q.q.replaceAll("'","")}')">🔊 Read question</button></div></div>`;window.currentQuestion=q;}
+function answer(i){if(answered)return;answered=true;tried++;let q=window.currentQuestion;let buttons=document.querySelectorAll('.answer');buttons[q.c].classList.add('correct');let fb=document.getElementById('feedback');if(i===q.c){correct++;stars++;fb.textContent='🎉 Correct! +1 star. '+q.why;fb.style.color='var(--green)';}else{buttons[i].classList.add('wrong');fb.textContent='🌱 Good try! '+q.why;fb.style.color='var(--red)';}document.getElementById('next').classList.remove('hidden');updateStats();}
+function nextQuestion(){index++;renderQuestion()}
+function updateStats(){
+document.getElementById('score').textContent=correct;
+document.getElementById('done').textContent=tried;
+document.getElementById('rate').textContent=tried?Math.round(correct/tried*100)+'%':'0%';
+document.getElementById('stars').textContent=stars;
+try { localStorage.setItem(PROGRESS_KEY, JSON.stringify({correct,tried,stars,updatedAt:new Date().toISOString()})); } catch(e) {}
+}
+function resetProgress(){
+if(!confirm('Reset all saved scores and stars on this device?')) return;
+correct=0; tried=0; stars=0; updateStats();
+}
+updateStats();
+function speak(t){if('speechSynthesis'in window){speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(t);u.lang=/[\u0900-\u097F]/.test(t)?'hi-IN':'en-IN';speechSynthesis.speak(u)}else alert(t)}
+</script>
+</body></html>
